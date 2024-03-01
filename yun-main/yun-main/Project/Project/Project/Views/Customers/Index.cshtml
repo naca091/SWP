@@ -10,6 +10,12 @@
     <div>
         <a asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Create New</a>
     </div>
+<form asp-action="Index" method="get">
+    <p>
+        Name: <input type="text" name="searchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
 @if (Model != null)
 {
     <table class="table">
@@ -47,3 +53,25 @@ else
     <p>No customers found.</p>
 }
     </div>
+
+<div class="pagination" id="notes-pagination">
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+    }
+    else
+    {
+        <span>Previous</span>
+    }
+
+    <span> @Model.PageIndex </span>
+
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+    }
+    else
+    {
+        <span> Next</span>
+    }
+</div>
