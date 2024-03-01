@@ -19,12 +19,20 @@ namespace Project.Controllers
             _context = context;
         }
 
-        // GET: Customers
-        public IActionResult Index()
-        {
-            var customers = _context.Customers.ToList();
-            return View(customers);
-        }
+        //GET Index
+public async Task<IActionResult> Index(string searchString, int? pageNumber)
+{
+    var customers = from c in _context.Customers
+                    select c;
+
+    if (!String.IsNullOrEmpty(searchString))
+    {
+        customers = customers.Where(c => c.Name.Contains(searchString));
+    }
+
+    int pageSize = 5; // Change this number to the desired number of items per page
+    return View(await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), pageNumber ?? 1, pageSize));
+}
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -145,5 +153,12 @@ namespace Project.Controllers
         {
             return _context.Customers.Any(e => e.CustomerID == id);
         }
+
+         public IActionResult Search(string searchText)
+ {
+     // Logic để tìm kiếm khách hàng dựa trên searchText
+     var customers = _context.Customers.Where(c => c.Name.Contains(searchText)).ToList();
+     return View("Index", customers);
+ }
     }
 }
