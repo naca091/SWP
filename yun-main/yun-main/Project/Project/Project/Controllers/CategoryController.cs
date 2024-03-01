@@ -98,17 +98,19 @@ namespace Rolepp.Controllers
         // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("categoryId,Name")] Category category, [FromForm(Name = "file")] IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("categoryId,Name,categoryImg")] Category category, [FromForm(Name = "file")] IFormFile file)
         {
             if (id != category.categoryId)
             {
                 return NotFound();
             }
 
-            if (category.Name != null && category.categoryImg == null)
+            if (category.Name != null)
             {
                 try
                 {
+                    var existingCategory = await _context.Category.AsNoTracking().FirstOrDefaultAsync(c => c.categoryId == id);
+
                     // Check if a new file was uploaded
                     if (file != null && file.Length > 0)
                     {
@@ -123,6 +125,10 @@ namespace Rolepp.Controllers
 
                         // Update categoryImg field with the new file name
                         category.categoryImg = uniqueFileName;
+                    }
+                    else if (existingCategory != null)
+                    {
+                        category.categoryImg = existingCategory.categoryImg;
                     }
 
                     _context.Update(category);
@@ -144,7 +150,6 @@ namespace Rolepp.Controllers
 
             return View(category);
         }
-
 
 
         // GET: Categories/Delete/5

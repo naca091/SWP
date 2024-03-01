@@ -142,7 +142,6 @@ namespace Project.Controllers
         }
 
         // POST: Product/Edit/5
-        // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,Price,Quantity,ProductCode,WarehouseId,CategoryId")] Product product, [FromForm(Name = "file")] IFormFile file)
@@ -152,49 +151,54 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            
-                if (product.ProductID != null && product.ProductName != null && product.Price != null && product.Quantity != null && product.ProductCode != null && product.WarehouseId != null && product.Warehouse == null && product.Category == null && product.CategoryId != null)
+            if (product.ProductID != null && product.ProductName != null && product.Price != null && product.Quantity != null && product.ProductCode != null && product.WarehouseId != null && product.Warehouse == null && product.Category == null && product.CategoryId != null)
+            {
+                try
                 {
-                    try
+                    var existingProduct = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.ProductID == id);
+
+                    if (file != null && file.Length > 0)
                     {
-                        if (file != null && file.Length > 0)
+                        // Save the file to the 'img' folder in wwwroot
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            // Save the file to the 'img' folder in wwwroot
-                            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                            string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                            using (var fileStream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await file.CopyToAsync(fileStream);
-                            }
-
-                            // Update the ProductImg field with the new file name
-                            product.ProductImg = uniqueFileName;
+                            await file.CopyToAsync(fileStream);
                         }
 
-                        _context.Update(product);
-                        await _context.SaveChangesAsync();
+                        // Update the ProductImg field with the new file name
+                        product.ProductImg = uniqueFileName;
                     }
-                    catch (DbUpdateConcurrencyException)
+                    else if (existingProduct != null)
                     {
-                        if (!ProductExists(product.ProductID))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        product.ProductImg = existingProduct.ProductImg;
                     }
-                    return RedirectToAction(nameof(Index));
-                
+
+                    _context.Update(product);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductExists(product.ProductID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
 
             ViewBag.Warehouses = new SelectList(_context.Warehouses, "WarehouseId", "WarehouseName", product.WarehouseId);
             ViewBag.Categories = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
+
 
 
         // GET: Product/Delete/5
