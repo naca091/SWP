@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
@@ -7,7 +7,6 @@ using Project.Data;
 using Project.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace Project.Controllers
 {
@@ -83,7 +82,7 @@ namespace Project.Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,Email,Phone")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,Name,Address,Email,Phone")] Customer customer)
         {
             if (id != customer.CustomerID)
             {
@@ -146,14 +145,5 @@ namespace Project.Controllers
         {
             return _context.Customers.Any(e => e.CustomerID == id);
         }
-
-        [HttpGet]
-        public JsonResult IsPhoneExist(string Phone)
-        {
-            return Json(_context.Customers.Any(c => c.Phone == Phone));
-        }
-
-
-
     }
 }
