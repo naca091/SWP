@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project.Models
 {
@@ -17,8 +18,9 @@ namespace Project.Models
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Please enter customer phone number")]
-        [Phone(ErrorMessage = "Invalid phone number")]
+        [Required(ErrorMessage = "Phone is required.")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone must be 10 digits.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone must be numeric.")]
         public string Phone { get; set; }
     }
 }

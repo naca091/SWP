@@ -38,6 +38,10 @@ namespace Project.Data
                 .HasOne(np => np.Product)
                 .WithMany(p => p.NoteProducts)
                 .HasForeignKey(np => np.ProductID);
+
+            modelBuilder.Entity<Customer>()
+        .HasIndex(u => u.Phone)
+        .IsUnique();
         }
     }
     }

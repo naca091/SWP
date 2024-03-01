@@ -7,6 +7,7 @@ using Project.Data;
 using Project.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Project.Controllers
 {
@@ -144,6 +145,12 @@ namespace Project.Controllers
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.CustomerID == id);
+        }
+
+        [HttpGet]
+        public JsonResult IsPhoneExist(string Phone)
+        {
+            return Json(_context.Customers.Any(c => c.Phone == Phone));
         }
     }
 }
