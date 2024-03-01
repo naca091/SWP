@@ -60,13 +60,16 @@ namespace Project.Controllers
             return View(await PaginatedList<Note>.CreateAsync(notes.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-
-        // GET: Notes/Create
+        //get create 
         public async Task<IActionResult> Create()
         {
             // Chỉ lấy những sản phẩm có trong kho
             var inStockProducts = _context.Products.Where(p => p.InStock).ToList();
             ViewBag.Products = inStockProducts;
+
+            // Lấy danh sách khách hàng và số điện thoại
+            ViewBag.Customers = _context.Customers.ToList();
+            ViewBag.Phones = _context.Customers.Select(c => c.Phone).ToList();
 
             var currentUser = await _userManager.GetUserAsync(User);
             var model = new NoteViewModel
@@ -79,22 +82,12 @@ namespace Project.Controllers
         }
 
 
-
-
-
         // POST: Notes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create(NoteViewModel model)
         {
-
-            var duplicateProducts = model.Products
-             .GroupBy(p => p.ProductID)
-             .Where(g => g.Count() > 1)
-             .Select(g => g.Key)
-             .ToList();
-
-
             // Kiểm tra sự tồn tại của sản phẩm trong cơ sở dữ liệu
             foreach (var productViewModel in model.Products)
             {
@@ -105,18 +98,25 @@ namespace Project.Controllers
                     return View(model);
                 }
             }
+
             if (ModelState.IsValid)
             {
-
-
+                var phoneAsInt = int.Parse(model.Phone);
+                var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == phoneAsInt);
+                if (customer == null)
+                {
+                    ModelState.AddModelError("", "Invalid customer selection.");
+                    return View(model);
+                }
 
                 // Map NoteViewModel to Note entity
                 var note = new Note
                 {
                     NoteCode = model.NoteCode,
                     CreateName = model.UserName,
-                    Customer = model.Customer,
-                    AddressCustomer = model.AddressCustomer,
+                    Customer = customer.Name,
+                    Phone = customer.Phone, // Lấy số điện thoại từ Customer
+                    AddressCustomer = customer.Address,
                     Reason = model.Reason,
                     Status = 1,
                     CreatedDate = DateTime.Now,
@@ -124,7 +124,7 @@ namespace Project.Controllers
                 };
 
                 _context.Notes.Add(note);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 foreach (var productViewModel in model.Products)
                 {
@@ -138,6 +138,7 @@ namespace Project.Controllers
 
                     _context.NoteProducts.Add(noteProduct);
                 }
+
                 foreach (var product in model.Products)
                 {
                     var productInDb = _context.Products.FirstOrDefault(p => p.ProductID == product.ProductID);
@@ -147,13 +148,12 @@ namespace Project.Controllers
                     }
                 }
 
-                _context.SaveChanges(); // Save changes to save NoteProducts
+                await _context.SaveChangesAsync(); // Save changes to save NoteProducts
 
                 return RedirectToAction(nameof(Index));
             }
 
             // If ModelState is not valid, return to the create view with errors
-
             return View(model);
         }
 
@@ -450,6 +450,21 @@ namespace Project.Controllers
 
             return PartialView("_NoteDetails", note);
         }
+
+        [HttpGet]
+        public IActionResult GetCustomerDetails(int customerId)
+        {
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
+            if (customer != null)
+            {
+                return Json(new { customer = new { name = customer.Name, address = customer.Address } });
+            }
+            return Json(new { customer = (Customer)null });
+        }
+
+
+
+
 
 
     }

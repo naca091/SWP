@@ -162,16 +162,16 @@
                     <td>@product.Product.ProductCode</td>
                     <td>@product.StockOut</td>
                     <td>@product.Product.Price.ToString("C")</td>
-                    <td>$@(product.StockOut * product.Product.Price)</td>
+                    <td>$ @(product.StockOut * product.Product.Price)</td>
                 </tr>
             }
             <tr>
                 <td colspan="4">Total of Note (Number):</td>
-                <td id="totalOfNote">$@total</td>
+                <td id="totalOfNote">$ @total</td>
             </tr>
             <tr>
                 <td colspan="4">Total of Note (Write by characters):</td>
-                <td>$@totalInWords</td>
+                <td>$ @totalInWords</td>
             </tr>
 
         </tbody>

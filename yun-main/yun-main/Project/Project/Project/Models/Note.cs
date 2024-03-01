@@ -17,6 +17,7 @@ namespace Project.Models
         [Display(Name = "Created's Name: ")]
         public string CreateName { get; set; }
 
+
         [Required]
         [StringLength(255)]
         [Display(Name = "Customer: ")]
@@ -36,6 +37,11 @@ namespace Project.Models
 
         [Display(Name = "Total Bill: ")]
         public decimal Total { get; set; }
+
+        [Required]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone must be 10 digits.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone must be numeric.")]
+        public string Phone { get; set; } // Cột mới
 
 
         [Range(1, 4, ErrorMessage = "Status must be between 1 and 4")]

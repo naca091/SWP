@@ -152,5 +152,8 @@ namespace Project.Controllers
         {
             return Json(_context.Customers.Any(c => c.Phone == Phone));
         }
+
+
+
     }
 }

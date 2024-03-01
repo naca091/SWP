@@ -26,18 +26,28 @@
             <input asp-for="UserName" class="form-control" readonly />
             <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
+
         <div class="form-group input-data">
-            <input asp-for="Customer" class="form-control" id="Customer" required placeholder="Customer" />
+            <select asp-for="Phone" asp-items="@(new SelectList(ViewBag.Customers, "CustomerID", "Phone"))" class="form-control" id="Phone" required>
+                <option value="">Select phone of Customer</option>
+            </select>
+            <span asp-validation-for="Phone" class="text-danger"></span>
+            <div class="underline"></div>
+        </div>
+
+
+        <div class="form-group input-data">
+            <input asp-for="Customer" class="form-control" id="Customer" required placeholder="Customer Name" readonly />
             <span asp-validation-for="Customer" class="text-danger"></span>
             <div class="underline"></div>
-
         </div>
         <div class="form-group input-data">
-            <input asp-for="AddressCustomer" class="form-control" id="AddressCustomer" required placeholder="Address Customer" />
+            <input asp-for="AddressCustomer" class="form-control" id="AddressCustomer" required placeholder="Address Customer" readonly />
             <span asp-validation-for="AddressCustomer" class="text-danger"></span>
             <div class="underline"></div>
-
         </div>
+
+
         <div class="form-group input-data">
             <input asp-for="Reason" class="form-control" id="Reason" required placeholder="Reason" />
             <span asp-validation-for="Reason" class="text-danger"></span>
@@ -130,43 +140,33 @@
     </form>
 </div>
 @section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            var counter = 0;
-
-            /*/ Xử lý sự kiện khi thay đổi sản phẩm trong dropdown
-            $("#dropdownsContainer").on("change", "#productDropdown", function () {
-                var productId = $(this).val(); // Lấy giá trị của sản phẩm đã chọn
-                var dropdownContainer = $(this).closest(".product-dropdown"); // Tìm phần tử cha gần nhất có lớp 'product-dropdown'
-
-                if (productId) { // Nếu có sản phẩm được chọn
-                    // Gửi yêu cầu AJAX đến máy chủ để lấy thông tin sản phẩm
+            $('#Phone').change(function () {
+                var selectedCustomerId = $(this).val();
+                if (selectedCustomerId) {
                     $.ajax({
-                        url: '/Products/GetProductDetails', // Đường dẫn đến action xử lý lấy thông tin sản phẩm
                         type: 'GET',
-                        data: { 'id': productId }, // Dữ liệu gửi đi, trong trường hợp này là ID của sản phẩm
-                        success: function (data) { // Hàm được gọi khi yêu cầu AJAX thành công
-                            // Cập nhật các trường thông tin của sản phẩm
-                            dropdownContainer.find("#ProductCode").val(data.productCode);
-                            dropdownContainer.find("#Quantity").val(data.quantity);
-                            dropdownContainer.find("#Price").val(data.price);
-
-                            // Tính toán và cập nhật TotalOfNote
-                            var totalOfNote = 0;
-                            $(".product-dropdown").each(function () {
-                                var stockOut = parseFloat($(this).find("input[name$='.StockOut']").val()) || 0; // Lấy giá trị StockOut từ input
-                                var price = parseFloat($(this).find("#Price").val()) || 0; // Lấy giá trị Price từ input
-                                var total = stockOut * price; // Tính toán Total
-                                totalOfNote += total;
-                            });
-                            $("#TotalOfProduct").val(totalOfNote);
+                        url: '@Url.Action("GetCustomerDetails", "Notes")',
+                        data: { 'customerId': selectedCustomerId },
+                        success: function (res) {
+                            if (res.customer) {
+                                $('#Customer').val(res.customer.name);
+                                $('#AddressCustomer').val(res.customer.address);
+                            }
                         },
-                        error: function () { // Hàm được gọi khi có lỗi xảy ra trong quá trình gửi yêu cầu AJAX
-                            console.log("Error occurred while fetching product details.");
+                        error: function (err) {
+                            console.log(err);
                         }
                     });
                 }
-            });*/
+            });
+        });
+        $(document).ready(function () {
+            var counter = 0;
+
+
             // Xử lý sự kiện khi thay đổi sản phẩm trong dropdown
             $("#dropdownsContainer").on("change", "#productDropdown", function () {
                 var productId = $(this).val(); // Lấy giá trị của sản phẩm đã chọn
