@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ASUS\\Downloads\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj": {}
+    "C:\\Users\\ASUS\\Desktop\\SWP\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ASUS\\Downloads\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\SWP\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ASUS\\Downloads\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\SWP\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj",
         "projectName": "Model",
-        "projectPath": "C:\\Users\\ASUS\\Downloads\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\SWP\\yun-main\\yun-main\\Project\\Project\\Model\\Model.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ASUS\\Downloads\\yun-main\\yun-main\\Project\\Project\\Model\\obj\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\SWP\\yun-main\\yun-main\\Project\\Project\\Model\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
