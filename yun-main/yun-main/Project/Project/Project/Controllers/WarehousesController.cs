@@ -142,6 +142,19 @@ namespace Project.Controllers
         {
             return _context.Warehouses.Any(e => e.WarehouseId == id);
         }
+
+        public JsonResult GetDistricts(string provinceCode)
+        {
+            var districts = _context.Districts.Where(d => d.ProvinceCode == provinceCode).ToList();
+            return Json(districts);
+        }
+
+        public JsonResult GetWards(string districtCode)
+        {
+            var wards = _context.Wards.Where(w => w.DistrictCode == districtCode).ToList();
+            return Json(wards);
+        }
+
     }
 }
 

@@ -81,6 +81,16 @@
         </li>
     }
 
+    @if (User.IsInRole("Admin"))
+    {
+        <li class="nav-item active">
+            <a id="noteButton" class="nav-link" asp-area="" asp-controller="Customers" asp-action="Index">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Customers</span>
+            </a>
+        </li>
+    }
+
     @if (User.IsInRole("CFO"))
     {
         <li class="nav-item active">

@@ -17,8 +17,12 @@ namespace Project.Data
 
         public DbSet<Category> Category { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }  
-            
+        public DbSet<Customer> Customers { get; set; }
+
+
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ward> Wards { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -30,6 +30,22 @@
                 <div class="underline"></div>
             </div>
         </div>
+
+        <div>
+        <select id="provinces-dropdown">
+            <!-- Options for provinces will be filled when the page loads -->
+        </select>
+        </div>
+
+        <select id="districts-dropdown">
+            <!-- Options for districts will be filled based on selected province -->
+        </select>
+
+        <select id="wards-dropdown">
+            <!-- Options for wards will be filled based on selected district -->
+        </select>
+
+
         <div class="form-group">
             <div class="submit-btn">
                 <div class="input-data">
@@ -48,3 +64,42 @@
         </div>
     </form>
 </div>
+
+
+
+<script>
+    $(document).ready(function () {
+        // Load provinces when the page loads
+        $.getJSON('@Url.Action("GetProvinces")', function (data) {
+            var items = '';
+            $.each(data, function (i, province) {
+                items += "<option value='" + province.Code + "'>" + province.Name + "</option>";
+            });
+            $('#provinces-dropdown').html(items);
+        });
+
+        // Update districts when a province is selected
+        $('#provinces-dropdown').change(function () {
+            var provinceCode = $(this).val();
+            $.getJSON('@Url.Action("GetDistricts")', { provinceCode: provinceCode }, function (data) {
+                var items = '';
+                $.each(data, function (i, district) {
+                    items += "<option value='" + district.Code + "'>" + district.Name + "</option>";
+                });
+                $('#districts-dropdown').html(items);
+            });
+        });
+
+        // Update wards when a district is selected
+        $('#districts-dropdown').change(function () {
+            var districtCode = $(this).val();
+            $.getJSON('@Url.Action("GetWards")', { districtCode: districtCode }, function (data) {
+                var items = '';
+                $.each(data, function (i, ward) {
+                    items += "<option value='" + ward.Code + "'>" + ward.Name + "</option>";
+                });
+                $('#wards-dropdown').html(items);
+            });
+        });
+    });
+</script>
