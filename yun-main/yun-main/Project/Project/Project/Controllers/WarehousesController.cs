@@ -145,7 +145,7 @@ namespace Project.Controllers
 
         public JsonResult GetDistricts(string provinceCode)
         {
-            var districts = _context.Districts.Where(d => d.ProvinceCode == provinceCode).ToList();
+            var districts = _context.Districts.Where(d => d.province_code == provinceCode).ToList();
             return Json(districts);
         }
 

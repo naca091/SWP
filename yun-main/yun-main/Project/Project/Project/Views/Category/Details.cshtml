@@ -1,6 +1,30 @@
 ﻿@model Project.Models.Category
+<link href="@Url.Content("~/css/Details.css")" rel="stylesheet">
+<style>
+    .text {
+        font-size: 41px;
+        font-weight: 600;
+        text-align: center;
+        background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+    }
 
-<h2>Details</h2>
+    /* Style cho nhãn của dòng */
+    .row dt {
+        width: 50%;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    /* Style cho nội dung của dòng */
+    1 .row dd {
+        width: 50%;
+    }
+</style>
+
+<div class="text">Details</div>
 <style>
     img {
         width: 150px;
@@ -8,11 +32,22 @@
     }
 </style>
 <div class="container">
-    <h4>Category ID: @Model.categoryId</h4>
-    <h4>Name: @Model.Name</h4>
-    <img src="@Url.Content("~/img/" + Model.categoryImg)" alt="Category Image" />
+    <h4 class="text">@Model.Name</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Category ID:</dt>
+        <dd class="col-sm-10">@Model.categoryId</dd>
+        <dt class="col-sm-2">Product Image:</dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Content("~/img/" + Model.categoryImg)" alt="Product Image" />
+        </dd>
+        <div class="back-btn">
+            <div class="submit-btn">
+                <div class="input-data">
+                    <div class="inner"></div>
+                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </dl>
 </div>
 
-<p>
-    <a asp-action="Index">Back to List</a>
-</p>

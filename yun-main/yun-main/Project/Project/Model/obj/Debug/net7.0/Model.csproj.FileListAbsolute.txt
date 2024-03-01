@@ -36,3 +36,16 @@ C:\Users\ASUS\Desktop\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7
 C:\Users\ASUS\Desktop\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\refint\Model.dll
 C:\Users\ASUS\Desktop\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.pdb
 C:\Users\ASUS\Desktop\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\ref\Model.dll
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\bin\Debug\net7.0\Model.deps.json
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\bin\Debug\net7.0\Model.dll
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\bin\Debug\net7.0\Model.pdb
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.csproj.AssemblyReference.cache
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.AssemblyInfoInputs.cache
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.AssemblyInfo.cs
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.csproj.CoreCompileInputs.cache
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.sourcelink.json
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.dll
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\refint\Model.dll
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\Model.pdb
+C:\Users\ASUS-PRO\OneDrive\Máy tính\SWP\yun-main\yun-main\Project\Project\Model\obj\Debug\net7.0\ref\Model.dll

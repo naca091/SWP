@@ -30,26 +30,26 @@
             }, "value", "text"), "Select Sort Order", new { @onchange = "this.form.submit();" })
         </div>
     </div>
-<form asp-action="Index" method="get" id="searchForm">
-    <p>
-        <label for="fromDate">Từ ngày:</label>
-        <input type="date" id="fromDate" name="fromDate" />
+    <form asp-action="Index" method="get" id="searchForm">
+        <p>
+            <label for="fromDate">Từ ngày:</label>
+            <input type="date" id="fromDate" name="fromDate" />
 
-        <label for="toDate">Đến ngày:</label>
-        <input type="date" id="toDate" name="toDate" />
+            <label for="toDate">Đến ngày:</label>
+            <input type="date" id="toDate" name="toDate" />
 
-        <input type="submit" value="Search" />
-    </p>
-</form>
+            <input type="submit" value="Search" />
+        </p>
+    </form>
 
-<form asp-action="DownloadSearchResults" method="get" id="downloadForm">
-    <input type="hidden" name="fromDate" value="@ViewBag.FromDate" />
-    <input type="hidden" name="toDate" value="@ViewBag.ToDate" />
-    <input type="submit" value="Download Search Results" id="downloadButton" disabled />
-</form>
+    <form asp-action="DownloadSearchResults" method="get" id="downloadForm">
+        <input type="hidden" name="fromDate" value="@ViewBag.FromDate" />
+        <input type="hidden" name="toDate" value="@ViewBag.ToDate" />
+        <input type="submit" value="Download Search Results" id="downloadButton" disabled />
+    </form>
 
 
-   
+
     <table class="table" id="notes-table">
         <thead>
             <tr>
@@ -99,11 +99,11 @@
                         <a asp-action="Details" asp-route-id="@item.NoteId" style="background-color: #0033CC;" class="link-details">See Details</a>
                     </td>
                     <td>
-    <a asp-action="DownloadNoteDetails" asp-route-id="@item.NoteId">Download</a> <!-- Nút tải xuống -->
-</td>
-<td>
-    <a href="#" class="print-button" data-id="@item.NoteId">Print</a>
-</td>
+                        <a asp-action="DownloadNoteDetails" asp-route-id="@item.NoteId" style="background-color: #0033CC;" class="link-details">Download</a> <!-- Nút tải xuống -->
+                    </td>
+                    <td>
+                        <a href="#" class="print-button" data-id="@item.NoteId" style="background-color: #0033CC;" class="link-details">Print</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -133,8 +133,8 @@
 </div>
 
 @section Scripts {
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
 
         function printNote(noteId) {
             var win = window.open('/Notes/Details/' + noteId, '_blank');
@@ -153,55 +153,55 @@
 
 
 
-    function updateStatus(noteId, newStatus) {
-        $.ajax({
-            url: '/Notes/UpdateStatusAjax/' + noteId + '?newStatus=' + newStatus,
-            type: 'POST',
-            success: function (data) {
-                console.log('Status updated successfully');
-                location.reload();
-            },
-            error: function () {
-                console.log('Error updating status');
-            }
-        });
-    }
-
-    function deleteNote(noteId) {
-        $.ajax({
-            url: '/Notes/Delete/' + noteId,
-            type: 'POST',
-            success: function (data) {
-                console.log('Note deleted successfully');
-                location.reload();
-            },
-            error: function () {
-                console.log('Error deleting note');
-            }
-        });
-    }
-
-    function handleSortOrderChange() {
-        var selectedSortOrder = $("#SortOrder").children("option:selected").val();
-        window.location.href = '/Notes/Index?sortOrder=' + selectedSortOrder;
-    }
-
-    $(document).ready(function () {
-        $("#SortOrder").change(handleSortOrderChange);
-    });
-
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Get the current URL
-        var url = new URL(window.location.href);
-
-        // Check if the URL contains the 'fromDate' and 'toDate' parameters
-        if (url.searchParams.has('fromDate') && url.searchParams.has('toDate')) {
-            // Enable the download button
-            document.getElementById('downloadButton').disabled = false;
+        function updateStatus(noteId, newStatus) {
+            $.ajax({
+                url: '/Notes/UpdateStatusAjax/' + noteId + '?newStatus=' + newStatus,
+                type: 'POST',
+                success: function (data) {
+                    console.log('Status updated successfully');
+                    location.reload();
+                },
+                error: function () {
+                    console.log('Error updating status');
+                }
+            });
         }
-    });
 
-</script>
+        function deleteNote(noteId) {
+            $.ajax({
+                url: '/Notes/Delete/' + noteId,
+                type: 'POST',
+                success: function (data) {
+                    console.log('Note deleted successfully');
+                    location.reload();
+                },
+                error: function () {
+                    console.log('Error deleting note');
+                }
+            });
+        }
+
+        function handleSortOrderChange() {
+            var selectedSortOrder = $("#SortOrder").children("option:selected").val();
+            window.location.href = '/Notes/Index?sortOrder=' + selectedSortOrder;
+        }
+
+        $(document).ready(function () {
+            $("#SortOrder").change(handleSortOrderChange);
+        });
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Get the current URL
+            var url = new URL(window.location.href);
+
+            // Check if the URL contains the 'fromDate' and 'toDate' parameters
+            if (url.searchParams.has('fromDate') && url.searchParams.has('toDate')) {
+                // Enable the download button
+                document.getElementById('downloadButton').disabled = false;
+            }
+        });
+
+    </script>
 }
 

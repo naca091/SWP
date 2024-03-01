@@ -7,102 +7,114 @@
         width: 100px;
         height: 100px;
     }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Align to the right */
+        margin-top: 20px; /* Adjust as needed */
+    }
+
+        .button-container input[type="submit"] {
+            margin-left: 10px; /* Add space between the buttons */
+        }
+
+        .button-container p {
+            margin: 0; /* Remove default margin */
+        }
 </style>
 <link href="@Url.Content("~/css/Index.css")" rel="stylesheet">
 <div class="container">
-<div class="centered text">
-    <h2>Product List</h2>
-</div>
+    <div class="centered text">
+        <h2>Product List</h2>
+    </div>
 
-<div class="d-sm-flex align-items-center mb-4 horizontal justify-content-between">
-    <form asp-action="Index" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" name="searchString" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
+    <div class="d-sm-flex align-items-center mb-4 horizontal justify-content-between">
+        <form asp-action="Index" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" name="searchString" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
-    <div>
+        </form>
+        <div>
             <form asp-action="Index" method="get">
                 <p>
                     <input type="hidden" name="outOfStock" value="true" />
                     <input type="submit" value="Show Out of Stock Products" />
                 </p>
             </form>
-        <form asp-action="Index" method="get">
-            <p>
-                <input type="hidden" name="lowQuantity" value="true" />
-                <input type="submit" value="Show Products with Low Quantity" />
-            </p>
-        </form>
+            <form asp-action="Index" method="get">
+                <p>
+                    <input type="hidden" name="lowQuantity" value="true" />
+                    <input type="submit" value="Show Products with Low Quantity" />
+                </p>
+            </form>
             <a asp-action="Download" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Download Products
-        </a>
-        <a asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Create New</a>
+                <i class="fas fa-download fa-sm text-white-50"></i> Download Products
+            </a>
+            <a asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Create New</a>
 
-            <p>
-                @Html.ActionLink("Back to List", "Index")
-            </p>
 
+
+        </div>
     </div>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product's Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Product Code</th>
-            <th>Warehouse</th>
-            <th>CategoryID</th>
-            <th>Product Img</th>
-            
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product's Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Product Code</th>
+                <th>Warehouse</th>
+                <th>CategoryID</th>
+                <th>Product Img</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
             <form asp-action="UpdateMultiple" method="post">
                 <input type="hidden" name="inStock" value="@(isOutOfStockPage ? "true" : "false")" />
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
+                <tr>
+                    <td>
                             @Html.DisplayFor(modelItem => item.ProductName)
                         <input type="checkbox" name="productIds" value="@item.ProductID" />
                         <br />
                     </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price) $
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Warehouse.WarehouseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId) <!-- Hiển thị tên của Category -->
-                </td>
-                <td>
-                    <img src="@Url.Content("~/img/" + item.ProductImg)" alt="Product Image" />
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductID" style="background-color: #0099FF;" class="link-edit">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductID" style="background-color: #0033CC;" class="link-details">Details</a> |
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Price) $
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.ProductCode)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Warehouse.WarehouseName)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.CategoryId) <!-- Hiển thị tên của Category -->
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/img/" + item.ProductImg)" alt="Product Image" />
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductID" style="background-color: #0099FF;" class="link-edit">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductID" style="background-color: #0033CC;" class="link-details">Details</a>
 
-                </td>
-            </tr>
-        }
-            <input type="submit" value="@(isOutOfStockPage ? "Set Products Available" : "Set Products Not Available")" />
+                    </td>
+                </tr>
+                }
+            <input class="button-container" type="submit" value="@(isOutOfStockPage ? "Set Products Available" : "Set Products Not Available")" />
             </form>
-    </tbody>
-</table>
+        </tbody>
+    </table>
     <div class="pagination">
         @if (Model.HasPreviousPage)
         {
@@ -123,5 +135,16 @@
         {
             <span> Next</span>
         }
+
+    </div>
+    <div class="button-container">
+        <div class="back-btn">
+            <div class="submit-btn">
+                <div class="input-data">
+                    <div class="inner"></div>
+                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
