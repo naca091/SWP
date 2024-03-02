@@ -25,8 +25,8 @@
 
 ### 3 Prepare to build Note Delivery Goods:
 
-- Add Nuget Package 
-- Add SQL Server file 
+
+- Change applicationjsonsetting file
 ### 4. Build Product 
 ```bash
   cd RoleApp 
@@ -36,4 +36,6 @@
 - Đinh Quốc Tiến 
 - Nguyễn Minh Tuấn   
 - Nguyễn Tuấn Hào 
-
+- Nguyễn Thanh Hậu
+- Trần Minh Tuấn
+- Diệp Minh Hùng
