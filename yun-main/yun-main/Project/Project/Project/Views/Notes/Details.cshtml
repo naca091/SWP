@@ -1,4 +1,4 @@
-﻿@model Project.Models.Note
+@model Project.Models.Note
 
 @{
     ViewData["Title"] = "Details";
@@ -13,6 +13,8 @@
     decimal total = Model.NoteProducts.Sum(p => p.StockOut * p.Product.Price);
     string totalInWords = ((int)total).ToWords();
 }
+<link href="@Url.Content("~/css/DetailsNote.css")" rel="stylesheet">
+
 <style>
     @@media print {
         body {
@@ -55,6 +57,9 @@
             display: none;
         }
 
+        .button-container {
+            display: none;
+        }
 
 
         #print-only-header .col-md-6 {
@@ -69,7 +74,9 @@
         }
     }
 
+
 </style>
+<div class="container">
 
 <div id="print-only">
     <div class="row" id="print-only-header">
@@ -190,6 +197,21 @@
 </div>
 
 
-<p id="backToList">
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div class="button-container">
+        <div class="back-btn">
+            <div class="submit-btn">
+                <div class="input-data">
+                    <div class="inner"></div>
+                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".print-button").click(function () {
+            window.print();
+        });
+    });
+</script>
