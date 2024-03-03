@@ -120,7 +120,8 @@ namespace Project.Controllers
                     Reason = model.Reason,
                     Status = 1,
                     CreatedDate = DateTime.Now,
-                    Total = 0
+                    Total = model.Products.Sum(p => p.StockOut * _context.Products.FirstOrDefault(prod => prod.ProductID == p.ProductID).Price)
+
                 };
 
                 _context.Notes.Add(note);
