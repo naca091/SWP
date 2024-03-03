@@ -1,0 +1,57 @@
+
+.container {
+    width: 100%;
+    max-width: 1500px;
+    padding: 100px 45px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.col-sm-2 {
+    text-align: left;
+}
+
+.col-sm-10 {
+    margin-left: 400px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .table th, .table td {
+        border: 2px solid #333;
+        text-align: center;
+        padding: 8px;
+    }
+
+    .table th {
+        background-color: #888b92;
+        color: #ffffff;
+    }
+
+    /* CSS cho các liên kết hành động */
+    .table a {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+
+
+
+.button-container input[type="submit"] {
+    margin-left: 10px; /* Add space between the buttons */
+}
+
+.button-container a {
+    margin-top: 100px;
+    background-color: #888b92; /* Remove default margin */
+}
+
+    .button-container a:hover {
+        background-color: #545557; /* Remove default margin */
+    }
+Đang hiển thị 1578424617082300639.
