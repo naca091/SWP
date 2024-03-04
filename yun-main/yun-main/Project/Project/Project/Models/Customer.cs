@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace Project.Models
@@ -22,5 +22,7 @@ namespace Project.Models
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone must be 10 digits.")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Phone must be numeric.")]
         public string Phone { get; set; }
+        public decimal Total { get; set; } // Thêm thuộc tính mới
+
     }
 }
