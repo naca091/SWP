@@ -2,7 +2,7 @@
 <link href="@Url.Content("~/css/Index.css")" rel="stylesheet">
 
 <div class="container">
-    
+
     <div class="centered text">
         <h2>Customer List</h2>
     </div>
@@ -10,49 +10,59 @@
     <div>
         <a asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Create New</a>
     </div>
-<form asp-action="Index" method="get">
-    <p>
-        Name: <input type="text" name="searchString">
-        <input type="submit" value="Search" />
-    </p>
-</form>
-@if (Model != null)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Cusomter's Name
-                </th>
 
-                <th>Phone Number</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <a asp-action="Download" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i> Download Customers
+    </a>
+    <form asp-action="Index" method="get">
+        <p>
+            Name: <input type="text" name="searchString">
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+    @if (Model != null)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
+                    <th>
+                        Cusomter's Name
+                    </th>
+
+                    <th>Phone Number</th>
+                    <th>Action</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
                             <a asp-action="Edit" asp-route-id="@item.CustomerID" style="background-color: #0099FF;" class="link-edit">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.CustomerID" style="background-color: #0033CC;" class="link-details">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No customers found.</p>
-}
-    </div>
+                        </td>
+
+                        <td>@Html.Raw(GetRank(item.Total)) / @Html.DisplayFor(modelItem => item.Total) Point</td>
+                        
+                       
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No customers found.</p>
+    }
+</div>
 
 <div class="pagination" id="notes-pagination">
     @if (Model.HasPreviousPage)
@@ -75,3 +85,21 @@ else
         <span> Next</span>
     }
 </div>
+
+
+@functions {
+    public string GetRank(decimal total)
+    {
+        if (total > 1000000)
+            return "<span style='color: #b9f2ff;'>Diamond</span>";
+        else if (total > 500000)
+            return "<span style='color: #e2e5e4;'>Platinum</span>";
+        else if (total > 200000)
+            return "<span style='color: #eabc00;'>Gold</span>";
+        else if (total > 100000)
+            return "<span style='color: #8a959b;'>Silver</span>";
+        else
+            return "<span style='color: #9ac5db;'>Bronze</span>";
+    }
+}
+
