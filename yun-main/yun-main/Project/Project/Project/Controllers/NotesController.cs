@@ -43,7 +43,7 @@ namespace Project.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                notes = notes.Where(s => s.NoteCode.Contains(searchString));
+                notes = notes.Where(s => s.Phone.Contains(searchString));
             }
             if (fromDate.HasValue && toDate.HasValue)
             {
@@ -109,6 +109,7 @@ namespace Project.Controllers
                     return View(model);
                 }
 
+
                 // Map NoteViewModel to Note entity
                 var note = new Note
                 {
@@ -126,6 +127,19 @@ namespace Project.Controllers
 
                 _context.Notes.Add(note);
                 await _context.SaveChangesAsync();
+                if (note.Status == 3)
+                {
+                    // Tìm Customer dựa trên Phone của Note
+                    customer = _context.Customers.FirstOrDefault(c => c.Phone == note.Phone);
+                    if (customer != null)
+                    {
+                        // Cập nhật Total của Customer
+                        customer.Total += note.Total;
+                        _context.Customers.Update(customer);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
 
                 foreach (var productViewModel in model.Products)
                 {
@@ -270,13 +284,24 @@ namespace Project.Controllers
             }
 
             note.UpdateStatus(newStatus);
-
             _context.Entry(note).State = EntityState.Modified;
+
+            // Nếu Status mới bằng 3, cập nhật Total của Customer
+            if (newStatus == 3)
+            {
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Phone == note.Phone);
+                if (customer != null)
+                {
+                    customer.Total += note.Total;
+                    _context.Customers.Update(customer);
+                }
+            }
 
             await _context.SaveChangesAsync();
 
             return Ok();
         }
+
 
         private bool NoteExists(int id)
         {
@@ -327,16 +352,18 @@ namespace Project.Controllers
 
                 AddValueWithBorder(worksheet, 7, 1, "Date Created");
                 AddValueWithBorder(worksheet, 7, 2, note.CreatedDate.ToString());
-                AddValueWithBorder(worksheet, 8, 1, "Status:");
-                AddValueWithBorder(worksheet, 8, 2, ConvertStatus(note.Status));
-                AddValueWithBorder(worksheet, 10, 3, "Product to Export");
+                AddValueWithBorder(worksheet, 8, 1, "Phone Number:");
+                AddValueWithBorder(worksheet, 8, 2, note.Phone);
+                AddValueWithBorder(worksheet, 9, 1, "Status:");
+                AddValueWithBorder(worksheet, 9, 2, ConvertStatus(note.Status));
+                AddValueWithBorder(worksheet, 11, 3, "Product to Export");
 
                 // Add header for Products
-                AddValueWithBorder(worksheet, 11, 1, "Product Name");
-                AddValueWithBorder(worksheet, 11, 2, "Product Code");
-                AddValueWithBorder(worksheet, 11, 3, "StockOut");
-                AddValueWithBorder(worksheet, 11, 4, "Price");
-                AddValueWithBorder(worksheet, 11, 5, "Total");
+                AddValueWithBorder(worksheet, 12, 1, "Product Name");
+                AddValueWithBorder(worksheet, 12, 2, "Product Code");
+                AddValueWithBorder(worksheet, 12, 3, "StockOut");
+                AddValueWithBorder(worksheet, 12, 4, "Price");
+                AddValueWithBorder(worksheet, 12, 5, "Total");
 
                 // Add data for Products
                 int row = 12;
@@ -463,10 +490,32 @@ namespace Project.Controllers
             return Json(new { customer = (Customer)null });
         }
 
+        public async Task<IActionResult> UpdateCustomerTotal(int noteId)
+        {
+            // Tìm Note dựa trên noteId
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound();
+            }
 
+            // Kiểm tra xem Status của Note có bằng 3 hay không
+            if (note.Status == 3)
+            {
+                // Tìm Customer dựa trên Phone của Note
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Phone == note.Phone);
+                if (customer != null)
+                {
+                    // Cập nhật Total của Customer
+                    customer.Total += note.Total;
+                    _context.Customers.Update(customer);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
-
-
+            // Quay lại trang quản lý Customer hoặc trang khác tùy thuộc vào yêu cầu của bạn
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
