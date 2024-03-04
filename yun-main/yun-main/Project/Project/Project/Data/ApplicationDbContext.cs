@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 
@@ -39,9 +39,6 @@ namespace Project.Data
                 .WithMany(p => p.NoteProducts)
                 .HasForeignKey(np => np.ProductID);
 
-            modelBuilder.Entity<Customer>()
-        .HasIndex(u => u.Phone)
-        .IsUnique();
         }
     }
     }
