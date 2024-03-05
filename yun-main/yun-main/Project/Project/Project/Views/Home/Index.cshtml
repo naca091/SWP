@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -24,9 +24,9 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)
+                                Total in @DateTime.Now.Year:
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$<span id="totalPrice">@ViewBag.TotalPrice</span></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$<span id="totalPrice"> @ViewBag.TotalFromNotes</span></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -44,9 +44,9 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Earnings (Annual)
+                                        Total Customer
                                     </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> @ViewBag.CustomerCount</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -87,25 +87,23 @@
                 </div>
 
                 <!-- Pending Requests Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Waiting Note Delivery Goods request
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Waiting Note Delivery Goods request
                             </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Quantity</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
             <!-- Content Row -->
 
             <div class="row">
@@ -115,20 +113,12 @@
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Expected Revenue Achieved</h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                     aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
                             </div>
                         </div>
                         <!-- Card Body -->
@@ -146,22 +136,8 @@
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                            <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                     aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
+
                         </div>
-                        <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-pie pt-4 pb-2">
                                 <canvas id="myPieChart"></canvas>
@@ -237,64 +213,43 @@
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-primary text-white shadow">
                                 <div class="card-body">
-                                    Primary
-                                    <div class="text-white-50 small">#4e73df</div>
+                                    BackEnd Đinh Quốc Tiến
+                                    QE170139
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-success text-white shadow">
                                 <div class="card-body">
-                                    Success
-                                    <div class="text-white-50 small">#1cc88a</div>
+                                    FrontEnd: Nguyễn Minh Tuấn
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-info text-white shadow">
                                 <div class="card-body">
-                                    Info
-                                    <div class="text-white-50 small">#36b9cc</div>
+                                    FrontEnd: Trần Minh Tuấn
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-warning text-white shadow">
                                 <div class="card-body">
-                                    Warning
-                                    <div class="text-white-50 small">#f6c23e</div>
+                                    Tester: Nguyễn Tuấn Hào
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-danger text-white shadow">
                                 <div class="card-body">
-                                    Danger
-                                    <div class="text-white-50 small">#e74a3b</div>
+                                    FrontEnd: Nguyễn Thanh Hậu
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
                             <div class="card bg-secondary text-white shadow">
                                 <div class="card-body">
-                                    Secondary
-                                    <div class="text-white-50 small">#858796</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card bg-light text-black shadow">
-                                <div class="card-body">
-                                    Light
-                                    <div class="text-black-50 small">#f8f9fc</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card bg-dark text-white shadow">
-                                <div class="card-body">
-                                    Dark
-                                    <div class="text-white-50 small">#5a5c69</div>
+                                    Tester: Lê Đồng Tâm
                                 </div>
                             </div>
                         </div>
@@ -307,40 +262,38 @@
                     <!-- Illustrations -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tuấn Minh Warehouse </h6>
                         </div>
                         <div class="card-body">
                             <div class="text-center">
                                 <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                     src="img/undraw_posting_photo.svg" alt="...">
+                                     src="img/anh.png" alt="...">
                             </div>
                             <p>
-                                Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                constantly updated collection of beautiful svg images that you can use
-                                completely free and without attribution!
+                                Tuan Minh Warehouse, distributor and transporter of low-cost goods.
+                                <br />
+                                Company motto: Customers are the source of money
                             </p>
-                            <a target="_blank" rel="nofollow" href="https://undraw.co/">
-                                Browse Illustrations on
-                                unDraw &rarr;
-                            </a>
+
                         </div>
                     </div>
 
                     <!-- Approach -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Why to choose us</h6>
                         </div>
                         <div class="card-body">
-                            <p>
-                                SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                CSS bloat and poor page performance. Custom CSS classes are used to create
-                                custom components and custom utility classes.
-                            </p>
-                            <p class="mb-0">
-                                Before working with this theme, you should become familiar with the
-                                Bootstrap framework, especially the utility classes.
-                            </p>
+                    <p>
+                        Tuan Minh Warehouse is a successful startup company in the region with many achievements that the startup has achieved in the past year.
+                    </p>
+                    <p class="mb-0">
+                        More than 25,000 orders have been delivered to international units
+                        <br />
+                        100 customers and partners in Vietnam
+                        <br />
+                        Hundreds of items are in stock and ready to ship anywhere
+                    </p>
                         </div>
                     </div>
 
