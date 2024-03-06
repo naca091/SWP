@@ -1,4 +1,4 @@
-﻿@model Project.Models.NoteViewModel
+@model Project.Models.NoteViewModel
 
 <link href="@Url.Content("~/css/Product.css")" rel="stylesheet">
 <style>
@@ -8,6 +8,48 @@
         padding: 25px 10px;     
         background: #fff;
         box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        /* Style the dropdown container */
+
+
+    /* Style the select element */
+    #productDropdown {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        font-size: 16px;
+        color: #444;
+    }
+
+    /* Style the search input */
+    #productSearchInput {
+        margin-top: 10px;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        font-size: 16px;
+    }
+
+    /* Style the search results */
+    #productSearchResults {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 16px;
+        color: #444;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    /* Style the validation message */
+    #productValidation {
+        margin-top: 10px;
+        font-size: 14px;
+    }
     }
 </style>
 <div class="container">
@@ -29,7 +71,7 @@
 
         <div class="form-group input-data">
             <select asp-for="Phone" asp-items="@(new SelectList(ViewBag.Customers, "CustomerID", "Phone"))" class="form-control" id="Phone" required>
-                <option value="">Select phone of Customer</option>
+                <option value="">Name and Address of Customer will autofill with Phone, please choose right!</option>
             </select>
             <span asp-validation-for="Phone" class="text-danger"></span>
             <div class="underline"></div>
@@ -181,7 +223,8 @@
                         success: function (data) { // Hàm được gọi khi yêu cầu AJAX thành công
                             // Cập nhật các trường thông tin của sản phẩm
                             dropdownContainer.find("#ProductCode").val(data.productCode);
-                            dropdownContainer.find("#Quantity").val(data.quantity);
+                            var quantity = data.quantity;
+                            dropdownContainer.find("#Quantity").val(quantity);
                             dropdownContainer.find("#Price").val(data.price);
                             dropdownContainer.find("#Category").val(data.category);
 
@@ -189,6 +232,11 @@
                             var totalOfNote = 0;
                             $(".product-dropdown").each(function () {
                                 var stockOut = parseFloat($(this).find("input[name$='.StockOut']").val()) || 0; // Lấy giá trị StockOut từ input
+                                if (stockOut > quantity) {
+                                    alert("Stock Out không thể lớn hơn Quantity. Vui lòng nhập lại.");
+                                    $(this).find("input[name$='.StockOut']").val(0);
+                                    return false; // Ngừng xử lý nếu StockOut lớn hơn Quantity
+                                }
                                 var price = parseFloat($(this).find("#Price").val()) || 0; // Lấy giá trị Price từ input
                                 var total = stockOut * price; // Tính toán Total
                                 totalOfNote += total;
