@@ -8,49 +8,61 @@
         padding: 25px 10px;     
         background: #fff;
         box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        /* Style the dropdown container */
-
-
-    /* Style the select element */
-    #productDropdown {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #f1f1f1;
-        font-size: 16px;
-        color: #444;
     }
 
-    /* Style the search input */
+    #productSearch {
+        margin-bottom: 10px; /* Add some space between search input and select */
+    }
+
     #productSearchInput {
-        margin-top: 10px;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #f1f1f1;
-        font-size: 16px;
+        margin-bottom: 5px; /* Add some space between search input and results */
     }
 
-    /* Style the search results */
-    #productSearchResults {
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #fff;
-        font-size: 16px;
-        color: #444;
-        max-height: 200px;
-        overflow-y: auto;
+    #productToExportForm {
+        position: relative;
     }
 
-    /* Style the validation message */
-    #productValidation {
-        margin-top: 10px;
-        font-size: 14px;
+    .buttons-container {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        text-align: right;
     }
+
+        .buttons-container button {
+            margin-left: 10px; /* Adjust spacing between buttons */
+        }
+
+    #productToExportForm {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
+    .product-dropdown {
+        margin-bottom: 20px;
+    }
+
+        .product-dropdown label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-dropdown input,
+        .product-dropdown select {
+            margin-bottom: 10px;
+        }
+
+    .btn-remove {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+        .btn-remove:hover {
+            background-color: #c82333;
+        }
+
 </style>
 <div class="container">
     <div class="text">
@@ -70,8 +82,13 @@
         </div>
 
         <div class="form-group input-data">
+            <div id="productSearch" style="position: relative;">
+                <input type="text" id="productSearchInput" class="form-control" placeholder="Search product...">
+                <span id="searchIcon" class="fa fa-search" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
+                <div id="productSearchResults"></div>
+            </div>
             <select asp-for="Phone" asp-items="@(new SelectList(ViewBag.Customers, "CustomerID", "Phone"))" class="form-control" id="Phone" required>
-                <option value="">Name and Address of Customer will autofill with Phone, please choose right!</option>
+                <option value="">Select phone of Customer</option>
             </select>
             <span asp-validation-for="Phone" class="text-danger"></span>
             <div class="underline"></div>
@@ -149,17 +166,17 @@
                             </div>
                             <!-- Kết thúc cột thứ hai -->
                         </div>
-                        <div class="col-md-1">
+                        <div class="buttons-container">
+                            <button type="button" id="addDropdown" class="btn btn-primary ml-3">Add Another Product</button>
                             <button type="button" class="btn btn-danger btn-remove">Remove</button>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <button type="button" id="addDropdown" class="btn btn-primary">Add Another Product</button>
         </div>
         <div class="form-group">
-            <label>Total of Note: </label>
+            <label class="text">Total of Note</label>
             <input type="number" id="TotalOfProduct" class="form-control" readonly />
         </div>
 
@@ -223,8 +240,7 @@
                         success: function (data) { // Hàm được gọi khi yêu cầu AJAX thành công
                             // Cập nhật các trường thông tin của sản phẩm
                             dropdownContainer.find("#ProductCode").val(data.productCode);
-                            var quantity = data.quantity;
-                            dropdownContainer.find("#Quantity").val(quantity);
+                            dropdownContainer.find("#Quantity").val(data.quantity);
                             dropdownContainer.find("#Price").val(data.price);
                             dropdownContainer.find("#Category").val(data.category);
 
@@ -232,11 +248,6 @@
                             var totalOfNote = 0;
                             $(".product-dropdown").each(function () {
                                 var stockOut = parseFloat($(this).find("input[name$='.StockOut']").val()) || 0; // Lấy giá trị StockOut từ input
-                                if (stockOut > quantity) {
-                                    alert("Stock Out không thể lớn hơn Quantity. Vui lòng nhập lại.");
-                                    $(this).find("input[name$='.StockOut']").val(0);
-                                    return false; // Ngừng xử lý nếu StockOut lớn hơn Quantity
-                                }
                                 var price = parseFloat($(this).find("#Price").val()) || 0; // Lấy giá trị Price từ input
                                 var total = stockOut * price; // Tính toán Total
                                 totalOfNote += total;
@@ -333,5 +344,60 @@
             });
 
         });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi thay đổi giá trị trong dropdown
+            $('#Phone').change(function () {
+                var selectedCustomerId = $(this).val();
+                if (selectedCustomerId) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("GetCustomerDetails", "Notes")',
+                        data: { 'customerId': selectedCustomerId },
+                        success: function (res) {
+                            if (res.customer) {
+                                // Cập nhật thông tin khách hàng
+                                $('#Customer').val(res.customer.name);
+                                $('#AddressCustomer').val(res.customer.address);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            });
+
+            // Xử lý sự kiện khi nhập vào ô tìm kiếm
+            $('#productSearchInput').on('input', function () {
+                var searchKeyword = $(this).val().toLowerCase();
+                $('#productSearchResults').empty();
+                $('#Phone option').each(function () {
+                    var phone = $(this).text().toLowerCase();
+                    if (phone.includes(searchKeyword)) {
+                        $('#productSearchResults').append($(this).clone());
+                    }
+                });
+            });
+
+            // Xử lý sự kiện khi click vào một kết quả từ ô tìm kiếm
+            $('#productSearchResults').on('click', 'option', function () {
+                var phone = $(this).text();
+                $('#Phone').val(phone).trigger('change'); // Trigger change event to fetch customer details
+                $('#productSearchInput').val(phone);
+                $('#productSearchResults').empty();
+            });
+
+            // Xử lý sự kiện khi focus vào ô tìm kiếm
+            $('#productSearchInput').on('focus', function () {
+                $('#Phone').val(''); // Reset dropdown value when focusing on search input
+                $('#Customer').val(''); // Clear customer name
+                $('#AddressCustomer').val(''); // Clear customer address
+            });
+        });
+
+
+
     </script>
 }
